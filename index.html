@@ -4056,7 +4056,7 @@
             }
             if (!auth.currentUser) {
                 showToast("Please log in or create an account to place an order.", false);
-                document.getElementById('cart-drawer').style.display = 'none';
+                closeAllDrawers();
                 document.getElementById('login-modal').classList.add('active');
                 return;
             }
@@ -4075,14 +4075,14 @@
                 });
                 cart = [];
                 updateCartUI();
-                document.getElementById('cart-drawer').style.display = 'none';
+                closeAllDrawers();
                 showToast("Order Request sent for approval! Check 'My Orders'.", true);
             } catch(e) {
                 console.warn("Could not save to Firestore.", e);
                 showToast("Order Request Sent! (Mock Mode - Config Missing)", true);
                 cart = [];
                 updateCartUI();
-                document.getElementById('cart-drawer').style.display = 'none';
+                closeAllDrawers();
             } finally {
                 isCheckingOut = false;
             }
@@ -4325,6 +4325,7 @@
 
 </body>
 </html>
+
 
 
 

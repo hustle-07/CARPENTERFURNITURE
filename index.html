@@ -3979,7 +3979,7 @@
                     });
                     statPendingOrders.textContent = pendingCount;
                 }, (error) => {
-                    adminOrdersList.innerHTML = '<p style="color:red;">Error loading orders. (Firebase Config Missing)</p>';
+                    adminOrdersList.innerHTML = '<p style="color:red;">Error loading orders: ' \+ error.message</p>';
                 });
             } catch(e) {
                  adminOrdersList.innerHTML = '<p style="color:red;">Firestore initialization error: ' + e.message + '</p>';
@@ -4040,7 +4040,7 @@
                         customerOrdersList.appendChild(card);
                     });
                 }, (error) => {
-                    customerOrdersList.innerHTML = '<p style="color:red;">Error loading your orders: ' + error.message + '</p>';
+                    customerOrdersList.innerHTML = '<p style="color:red;">Error loading your orders: ' \+ error.message</p>';
                 });
             } catch(e) {
                  customerOrdersList.innerHTML = '<p style="color:red;">Firestore initialization error: ' + e.message + '</p>';
@@ -4325,6 +4325,7 @@
 
 </body>
 </html>
+
 
 
 

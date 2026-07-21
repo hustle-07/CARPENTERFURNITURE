@@ -1,4 +1,4 @@
-﻿User-agent: *
+User-agent: *
 Allow: /
 
-Sitemap: https://hustle-07.github.io/CARPENTERFURNITURE/sitemap.xml
+Sitemap: https://carpenterfurnitures.com/sitemap.xml

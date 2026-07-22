@@ -195,22 +195,23 @@
         }
 
         header {
-            position: sticky;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 70px;
-            background-color: rgba(253, 252, 250, 0.96);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 2px solid var(--border-color); /* Prominent border line */
+            background-color: transparent;
+            border-bottom: none;
             z-index: 1000;
-            transition: var(--transition-smooth);
+            transition: all 0.3s ease;
         }
 
         header.scrolled {
-            box-shadow: var(--shadow-medium);
-            border-bottom-color: rgba(30, 26, 23, 0.08);
+            background-color: rgba(253, 252, 250, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
         .nav-container {

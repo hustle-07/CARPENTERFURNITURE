@@ -2734,21 +2734,6 @@
                 </div>
             </div>
 
-            <!-- Sorting Controls Panel -->
-            <div class="catalog-bar">
-                <div class="catalog-info" id="catalog-count-label">
-                    Showing 12 designs
-                </div>
-                <div class="catalog-controls">
-                    <select class="sort-select" id="catalog-sort" onchange="handleSortChange()">
-                        <option value="default">Default Arrangement</option>
-                        <option value="price-low">Price: Low to High</option>
-                        <option value="price-high">Price: High to Low</option>
-                        <option value="rating">Most Popular</option>
-                    </select>
-                </div>
-            </div>
-
             <div class="product-grid" id="product-grid">
                 <!-- Products rendered dynamically by JS -->
             </div>
@@ -3451,7 +3436,7 @@
             const countLabel = document.getElementById('catalog-count-label');
             grid.innerHTML = '';
 
-            countLabel.textContent = `Showing ${filteredList.length} genuine designs`;
+            if(countLabel) { countLabel.textContent = `Showing ${filteredList.length} genuine designs`; }
 
             if (filteredList.length === 0) {
                 grid.innerHTML = `
@@ -3524,7 +3509,8 @@
                 workingList = workingList.filter(p => p.category === currentFilter);
             }
 
-            const sortVal = document.getElementById('catalog-sort').value;
+            const sortValElement = document.getElementById('catalog-sort');
+            const sortVal = sortValElement ? sortValElement.value : 'default';
             if (sortVal === 'price-low') {
                 workingList.sort((a, b) => a.price - b.price);
             } else if (sortVal === 'price-high') {

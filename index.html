@@ -2525,6 +2525,42 @@
             margin-bottom: 15px;
         }
 
+    
+        .details-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: #ffffff !important;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            margin-top: 15px;
+            width: 100%;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .details-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
+            background: linear-gradient(135deg, #20bd59, #0f7a6d);
+        }
+
+        .details-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(37, 211, 102, 0.3);
+        }
+
+        .details-btn i {
+            font-size: 18px;
+        }
+
     </style>
 </head>
 <body>
@@ -3474,7 +3510,7 @@
                         </div>
                         <div class="product-price-action">
                             
-                            <a href="https://wa.me/917079466759?text=Hi, I want more details about ${prod.name}" target="_blank" class="details-btn" style="display: inline-block; padding: 8px 12px; background: var(--primary-beige); color: white; text-decoration: none; border-radius: 5px; font-size: 14px; margin-top: 10px; width: 100%; text-align: center;"><i class="fa-brands fa-whatsapp"></i> Get more details</a>
+                            <a href="https://wa.me/917079466759?text=Hi, I want more details about ${prod.name}" target="_blank" class="details-btn"><i class="fa-brands fa-whatsapp"></i> Get more details</a>
                         </div>
                     </div>
                 `;

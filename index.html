@@ -3899,19 +3899,21 @@
             <script type="module">
         // Import Firebase SDKs
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-analytics.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
         import { getFirestore, collection, addDoc, getDocs, query, orderBy, onSnapshot, serverTimestamp, doc, updateDoc, where } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
         const firebaseConfig = {
-            apiKey: "AIzaSyB0v4axY7o2yhsNbpoEAqY_aSewKQJB1SY",
-            authDomain: "client-1-29b46.firebaseapp.com",
-            projectId: "client-1-29b46",
-            storageBucket: "client-1-29b46.firebasestorage.app",
-            messagingSenderId: "290906658002",
-            appId: "1:290906658002:web:5efc3c0a5a8ac055ea490b",
-            measurementId: "G-N76R78FSWH"
+            apiKey: "AIzaSyAn0ZZS9hzQkTbzMQtRySX86Gtkbgh_hXw",
+            authDomain: "client-carpenter.firebaseapp.com",
+            projectId: "client-carpenter",
+            storageBucket: "client-carpenter.firebasestorage.app",
+            messagingSenderId: "289531039451",
+            appId: "1:289531039451:web:b394819dd052d76cb0c6fe",
+            measurementId: "G-BN0NBP2D4G"
         };
         const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
         const auth = getAuth(app);
         const db = getFirestore(app);
         const googleProvider = new GoogleAuthProvider();

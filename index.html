@@ -750,15 +750,26 @@
 
         @media (max-width: 768px) {
             .product-grid {
-                grid-template-columns: repeat(2, 1fr);
+                display: flex;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
                 gap: 16px;
+                padding-bottom: 16px;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none; /* Firefox */
+            }
+            .product-grid::-webkit-scrollbar {
+                display: none; /* Chrome, Safari */
+            }
+            .product-card {
+                flex: 0 0 70%;
+                scroll-snap-align: start;
             }
         }
 
         @media (max-width: 480px) {
-            .product-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
+            .product-card {
+                flex: 0 0 85%;
             }
         }
 

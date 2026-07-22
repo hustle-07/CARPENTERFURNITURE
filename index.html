@@ -220,13 +220,14 @@
         .logo {
             font-family: 'Playfair Display', serif;
             font-style: italic;
-            font-size: clamp(20px, 4vw, 25px);
-            font-weight: 900; /* Maximum bold logotype */
+            font-size: clamp(14px, 4vw, 25px);
+            font-weight: 900;
             color: var(--dark-brown);
             display: flex;
             align-items: center;
             gap: 6px;
             transition: var(--transition-smooth);
+            white-space: nowrap;
         }
 
         .logo:hover {
@@ -267,6 +268,22 @@
             color: var(--luxury-gold);
             transform: scale(1.05);
         }
+        @media (max-width: 768px) {
+            .nav-actions {
+                gap: 4px;
+            }
+            .nav-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 16px;
+                padding: 4px;
+            }
+            .logo img {
+                max-height: 40px !important;
+                margin-right: 6px !important;
+            }
+        }
+
 
         .badge {
             position: absolute;

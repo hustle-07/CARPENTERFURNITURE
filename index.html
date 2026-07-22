@@ -3411,9 +3411,9 @@
             document.body.style.overflow = 'auto';
         }
 
-        cartTrigger.addEventListener('click', () => openDrawer(cartDrawer));
-        wishlistTrigger.addEventListener('click', () => openDrawer(wishlistDrawer));
-        searchTrigger.addEventListener('click', () => {
+        if(cartTrigger) cartTrigger.addEventListener('click', () => openDrawer(cartDrawer));
+        if(wishlistTrigger) wishlistTrigger.addEventListener('click', () => openDrawer(wishlistDrawer));
+        if(searchTrigger) searchTrigger.addEventListener('click', () => {
             searchModal.classList.add('active');
             document.getElementById('search-input').focus();
             document.body.style.overflow = 'hidden';

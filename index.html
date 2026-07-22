@@ -195,13 +195,15 @@
         }
 
         header {
-            position: fixed;
+            position: sticky;
             top: 0;
             left: 0;
             width: 100%;
             height: 70px;
-            background-color: transparent;
-            border-bottom: none;
+            background-color: rgba(253, 252, 250, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,0,0,0.06);
             z-index: 1000;
             transition: all 0.3s ease;
         }

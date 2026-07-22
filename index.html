@@ -3540,7 +3540,7 @@
         }
 
         function handleCatalogArrangement() {
-            let workingList = [...PRODUCTS];
+            let workingList = getCombinedProducts();
 
             if (currentFilter !== 'all') {
                 workingList = workingList.filter(p => p.category === currentFilter);
@@ -3571,7 +3571,7 @@
         }
 
         function addToCart(productId) {
-            const product = PRODUCTS.find(p => p.id === productId);
+            const product = getCombinedProducts().find(p => p.id === productId);
             if (!product) return;
 
             const existingCartItem = cart.find(item => item.id === productId);
@@ -3932,6 +3932,7 @@
             document.querySelectorAll('.admin-tab-content').forEach(tab => tab.style.display = 'none');
             document.querySelectorAll('.admin-nav a').forEach(a => a.classList.remove('active'));
             document.getElementById('admin-tab-' + tabId).style.display = 'block';
+            if (tabId === 'products') renderAdminCustomItems();
             event.currentTarget.classList.add('active');
         };
 
@@ -4312,15 +4313,63 @@
                 </div>
             </div>
 
-            <!-- Products Tab -->
+            <!-- Products / Photos Upload Tab -->
             <div id="admin-tab-products" class="admin-tab-content" style="display: none;">
-                <h1 style="color: var(--dark-brown); font-family: 'Playfair Display', serif; margin-bottom: 20px;">Manage Catalog</h1>
-                <div style="background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center;">
-                    <i class="fa-solid fa-tools" style="font-size: 40px; color: #ccc; margin-bottom: 15px;"></i>
-                    <h3 style="color: var(--dark-brown);">Product Management Coming Soon</h3>
-                    <p style="color: #666;">You will be able to add, edit, and delete furniture items directly from here in the next update.</p>
+                <h1 style="color: var(--dark-brown); font-family: 'Playfair Display', serif; margin-bottom: 20px;">Upload Photos & Manage Catalog</h1>
+                
+                <!-- Add New Photo/Product Form -->
+                <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px;">
+                    <h3 style="color: var(--dark-brown); margin-bottom: 15px; font-size: 18px; display: flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-cloud-arrow-up" style="color: var(--luxury-gold);"></i> Upload New Photo / Furniture Item
+                    </h3>
+                    <form id="admin-upload-form" onsubmit="handleAdminUpload(event)" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div style="grid-column: span 2;">
+                            <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; color: #555;">Select Photo / Image File*</label>
+                            <input type="file" id="admin-item-image" accept="image/*" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; background: #fafafa;" onchange="previewAdminImage(event)">
+                            <div id="admin-img-preview-container" style="display: none; margin-top: 10px; text-align: center;">
+                                <img id="admin-img-preview" src="" alt="Preview" style="max-height: 160px; border-radius: 8px; border: 1px solid #eee; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; color: #555;">Title / Item Name*</label>
+                            <input type="text" id="admin-item-title" placeholder="e.g. Modern Teak Double Bed" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                        </div>
+
+                        <div>
+                            <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; color: #555;">Category*</label>
+                            <select id="admin-item-category" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; background: white;">
+                                <option value="beds">Beds & Bedroom</option>
+                                <option value="sofas">Sofas & Seating</option>
+                                <option value="wardrobes">Wardrobes & Cabinets</option>
+                                <option value="kitchen">Modular Kitchen</option>
+                                <option value="interior">Interior Designing</option>
+                                <option value="locks">Digital Locks</option>
+                                <option value="custom">All Custom Works</option>
+                            </select>
+                        </div>
+
+                        <div style="grid-column: span 2;">
+                            <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; color: #555;">Description (Optional)</label>
+                            <textarea id="admin-item-desc" rows="2" placeholder="Enter brief details about this photo/furniture..." style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; resize: vertical;"></textarea>
+                        </div>
+
+                        <div style="grid-column: span 2; text-align: right;">
+                            <button type="submit" style="padding: 12px 24px; background: var(--luxury-gold, #C5A059); color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: all 0.2s ease;">
+                                <i class="fa-solid fa-plus"></i> Publish to Website
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Uploaded Custom Photos Management -->
+                <h3 style="color: var(--dark-brown); margin-bottom: 15px; font-size: 18px;">Your Uploaded Photos & Items</h3>
+                <div id="admin-custom-items-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px;">
+                    <!-- Dynamically rendered custom items -->
                 </div>
             </div>
+        </div>
+    </div>
         </div>
     </div>
 

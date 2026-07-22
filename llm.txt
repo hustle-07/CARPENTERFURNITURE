@@ -1,0 +1,47 @@
+# Carpenter Furniture Web Project (carpenterfurnitures.com)
+
+## Overview
+This repository contains the source code for the "Carpenter Furniture" website, an established local manufacturer and wholesaler of premium wooden furniture (beds, sofas, custom marriage packages) and smart digital locks located in Patna City, Bihar. 
+
+The website serves as an elegant, minimalist, and high-performance digital storefront to showcase catalogs, capture local leads, and provide high-quality localized SEO signals.
+
+## Architecture & Tech Stack
+- **Architecture**: Single Page Application (SPA).
+- **Core Technology**: Pure Vanilla HTML5, CSS3, and JavaScript all bundled into a single monolithic file (`index.html`). No heavy frameworks (like React or Vue) are used, ensuring extremely fast load times.
+- **Hosting**: GitHub Pages (configured via the `CNAME` file pointing to `carpenterfurnitures.com`).
+
+## Directory Structure
+- `/index.html`: The core monolith file. Contains all HTML layout, inline `<style>` CSS, and inline `<script>` logic. This file handles everything from product grid rendering and dynamic filtering to modal dialogs and animations.
+- `/photos/`: Directory containing all visual assets, specifically highly compressed web-ready images (PNG, JPEG). Includes product photos, client review images, and aesthetic AI-generated background overlays (e.g., `minimalist_hero_bg.png`, `digital_lock_bg.png`).
+- `/CNAME`: Custom domain configuration for GitHub Pages.
+- `/robots.txt` & `/sitemap.xml`: SEO standard files for web crawlers.
+
+## Key Technical Features & Sections
+
+### 1. Minimalist Aesthetic Design System
+- **Typography**: Uses 'Inter' for clean, modern, and highly legible text across the site. Font weights are intentionally kept light to medium (400-500) to maintain a minimalist luxury feel.
+- **Color Palette**: Built around warm, natural, and premium hues:
+  - Dark Brown (`var(--dark-brown)`) for primary text and high-contrast elements.
+  - Luxury Gold (`var(--luxury-gold)`) for accents.
+  - Secondary Beige and warm off-white tones for backgrounds.
+
+### 2. SEO (Search Engine Optimization)
+- **Massive Keyword Targeting**: The `<head>` block is heavily optimized with 100+ highly localized keywords explicitly targeting search combinations like "carpenter furniture patna", "best carpenter furniture patna", "smart digital locks bihar", etc.
+- **Structured Data**: Implements JSON-LD Local Business Schema (`@type: FurnitureStore`) to give search engines explicit data on location, reviews, and catalog offerings.
+
+### 3. Dynamic Product Catalog (JavaScript)
+- Products are stored as an array of JSON objects within the `<script>` tag at the bottom of `index.html`.
+- The JavaScript iterates through this array to dynamically inject product cards into the DOM (`.product-grid`). 
+- Includes robust filtering logic (e.g., "All", "Beds", "Sofas", "Wardrobes", "Digital Locks").
+
+### 4. Interactive Components
+- **WhatsApp Integration**: High-converting Call-to-Action buttons link directly to WhatsApp API (`wa.me`) with pre-filled messages for instant inquiries.
+- **Smart Digital Locks Section**: Features a dedicated aesthetic segment highlighting modern security solutions.
+- **Testimonial Slider**: Contains verifiable real client reviews (e.g., "Tanu Priya", "Br01_zeus") with accompanying photographic evidence to build trust.
+- **Animations**: Uses CSS `@keyframes` for subtle interactions, such as `popIn` for modals. Note: Heavy SVG transform animations were intentionally removed from the `.hero-waves` to ensure stability across lower-end mobile browsers.
+
+## Maintenance Notes for AI Agents
+- **Editing `index.html`**: Because the file is large (~160KB), always use precise line-number targeting or exact string matching when using code modification tools. 
+- **Adding Products**: To add new items, locate the `products` array in the JavaScript section at the bottom of `index.html` and append a new JSON object following the existing schema.
+- **CSS Modifying**: All CSS is located in the `<style>` block in the `<head>`. Be cautious with global selectors; use specific classes or IDs.
+- **File Management**: Do not run arbitrary cleanup scripts without verifying their regex logic, as the monolithic file structure is sensitive to bracket/brace deletions.

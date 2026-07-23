@@ -3248,7 +3248,7 @@
                                 <img src="photos/carpenter-furniture-02.jpeg" alt="Wardrobe" class="hotspot-card-img">
                                 <div class="hotspot-title">Modern Sliding Glass Wardrobe</div>
                                 <div class="hotspot-price">₹28,500</div>
-                                <button class="hotspot-add" onclick="addToCart(2)">Add to Bag</button>
+                                <button class="hotspot-add" onclick="enquireProduct(2)">Enquire Now</button>
                             </div>
                         </div>
 
@@ -3259,7 +3259,7 @@
                                 <img src="https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?auto=format&fit=crop&w=400&q=80" alt="Study Desk" class="hotspot-card-img">
                                 <div class="hotspot-title">Solid Wood Study Desk</div>
                                 <div class="hotspot-price">₹8,500</div>
-                                <button class="hotspot-add" onclick="addToCart(19)">Add to Bag</button>
+                                <button class="hotspot-add" onclick="enquireProduct(19)">Enquire Now</button>
                             </div>
                         </div>
 
@@ -3270,7 +3270,7 @@
                                 <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=400&q=80" alt="Double Bed" class="hotspot-card-img">
                                 <div class="hotspot-title">Master Bedroom Solid Teak Bed</div>
                                 <div class="hotspot-price">₹32,000</div>
-                                <button class="hotspot-add" onclick="addToCart(13)">Add to Bag</button>
+                                <button class="hotspot-add" onclick="enquireProduct(13)">Enquire Now</button>
                             </div>
                         </div>
                     </div>
@@ -3593,27 +3593,6 @@
     <div class="drawer-overlay" id="drawer-overlay"></div>
 
     <!-- Shopping Bag Slide-out Drawer -->
-    <div class="drawer" id="cart-drawer">
-        <div class="drawer-header">
-            <h3 class="drawer-title">Selected Bag</h3>
-            <button class="drawer-close" id="cart-close" aria-label="Close">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-        </div>
-        <div class="drawer-body" id="cart-items-container">
-            <!-- Dynamic elements loaded by JS -->
-        </div>
-        <div class="drawer-footer">
-            <div class="drawer-total">
-                <span>Estimated Subtotal</span>
-                
-            </div>
-            <button class="checkout-btn" onclick="handleCheckout()">`n                PLACE ORDER REQUEST <i class="fa-solid fa-arrow-right"></i>
-            </button>
-        </div>
-    </div>
-
-    
     <!-- Interactive Search Modal Overlay -->
     <div class="search-modal" id="search-modal">
         <span class="search-modal-close" id="search-modal-close"><i class="fa-solid fa-xmark"></i></span>
@@ -3656,7 +3635,7 @@
                     Premium heavy-duty domestic wood frame directly sourced from timber mills and carved beautifully.
                 </p>
                 <button class="modal-add-to-cart" id="modal-add-btn">
-                    Add to Bag <i class="fa-solid fa-bag-shopping"></i>
+                    Enquire on WhatsApp <i class="fa-brands fa-whatsapp"></i>
                 </button>
             </div>
         </div>
@@ -3669,7 +3648,6 @@
     </div>
 
     <script>
-        let cart = [];
         let activeTestimonialIndex = 0;
         let currentFilter = 'all';
 
@@ -3841,6 +3819,7 @@
 
         // Format currency natively for India
         function formatCurrency(amount) {
+            if (!amount || isNaN(amount)) return "Price on Request";
             return new Intl.NumberFormat('en-IN', {
                 style: 'currency',
                 currency: 'INR',
@@ -3849,17 +3828,14 @@
         }
 
         const header = document.getElementById('header');
-        const cartDrawer = document.getElementById('cart-drawer');
         const drawerOverlay = document.getElementById('drawer-overlay');
         const searchModal = document.getElementById('search-modal');
         const productModal = document.getElementById('product-modal');
         
         // Dynamic trigger points
-        const cartTrigger = document.getElementById('cart-trigger');
         const searchTrigger = document.getElementById('search-trigger');
         
         // Close parameters
-        const cartClose = document.getElementById('cart-close');
         const searchClose = document.getElementById('search-modal-close');
         const modalClose = document.getElementById('modal-close');
 
@@ -3902,7 +3878,6 @@
         }
 
         function closeAllDrawersNoOverlay() {
-            cartDrawer.classList.remove('active');
             searchModal.classList.remove('active');
             productModal.classList.remove('active');
         }
@@ -3912,15 +3887,11 @@
             drawerOverlay.classList.remove('active');
             document.body.style.overflow = 'auto';
         }
-
-        if(cartTrigger) cartTrigger.addEventListener('click', () => openDrawer(cartDrawer));
         if(searchTrigger) searchTrigger.addEventListener('click', () => {
             searchModal.classList.add('active');
             document.getElementById('search-input').focus();
             document.body.style.overflow = 'hidden';
         });
-
-        cartClose.addEventListener('click', closeAllDrawers);
         searchClose.addEventListener('click', closeAllDrawers);
         modalClose.addEventListener('click', closeAllDrawers);
         drawerOverlay.addEventListener('click', closeAllDrawers);
@@ -4064,87 +4035,9 @@
                 slide.classList.toggle('active', i === activeTestimonialIndex);
             });
         }
-
-        function addToCart(productId) {
-            const product = getCombinedProducts().find(p => p.id === productId);
-            if (!product) return;
-
-            const existingCartItem = cart.find(item => item.id === productId);
-            if (existingCartItem) {
-                existingCartItem.qty += 1;
-            } else {
-                cart.push({ ...product, qty: 1 });
-            }
-
-            updateCartUI();
-            showToast(`Added ${product.name} to shopping bag.`);
-        }
-
-        function updateQty(productId, amount) {
-            const item = cart.find(p => p.id === productId);
-            if (!item) return;
-
-            item.qty += amount;
-            if (item.qty <= 0) {
-                cart = cart.filter(p => p.id !== productId);
-            }
-            updateCartUI();
-        }
-
         function removeFromCart(productId) {
             cart = cart.filter(p => p.id !== productId);
-            updateCartUI();
             showToast("Item removed from your bag.", false);
-        }
-
-        function updateCartUI() {
-            const container = document.getElementById('cart-items-container');
-            const badge = document.getElementById('cart-badge');
-            
-            let totalQty = cart.reduce((acc, item) => acc + item.qty, 0);
-            badge.textContent = totalQty;
-            badge.style.display = totalQty > 0 ? 'flex' : 'none';
-
-            if (cart.length === 0) {
-                container.innerHTML = `
-                    <div class="drawer-empty">
-                        <i class="fa-solid fa-bag-shopping"></i>
-                        <p>Your shopping bag is currently empty.</p>
-                        <button class="hero-btn" style="padding: 12px 24px; font-size:12px;" onclick="closeAllDrawers()">Browse Store Catalog</button>
-                    </div>
-                `;
-                
-                return;
-            }
-
-            container.innerHTML = '';
-            let totalPrice = 0;
-
-            cart.forEach(item => {
-                const itemTotal = item.price * item.qty;
-                totalPrice += itemTotal;
-
-                const cartItemEl = document.createElement('div');
-                cartItemEl.className = 'cart-item';
-                cartItemEl.innerHTML = `
-                    <img src="${item.image}" alt="${item.name}" class="cart-item-img">
-                    <div class="cart-item-details">
-                        <div>
-                            <h4 class="cart-item-name">${item.name}</h4>
-                        <div class="cart-item-qty-wrap">
-                            <button class="qty-btn" onclick="updateQty(${item.id}, -1)"><i class="fa-solid fa-minus"></i></button>
-                            <span class="qty-num">${item.qty}</span>
-                            <button class="qty-btn" onclick="updateQty(${item.id}, 1)"><i class="fa-solid fa-plus"></i></button>
-                        </div>
-                    </div>
-                    <button class="cart-item-remove" onclick="removeFromCart(${item.id})" aria-label="Remove item">
-                        <i class="fa-regular fa-trash-can"></i>
-                    </button>
-                `;
-                container.appendChild(cartItemEl);
-            });
-
-            totalDisplay.textContent = formatCurrency(totalPrice);
         }
         function setupSearchSystem() {
             const searchField = document.getElementById('search-input');
@@ -4199,6 +4092,24 @@
             });
         }
 
+        
+        function enquireProduct(productId) {
+            const product = PRODUCTS.find(p => p.id === productId);
+            if (!product) return;
+            
+            const text = "Hello Carpenter Furniture, I am interested in inquiring about:\n\n" +
+                         "- " + product.name + (product.price ? " (" + formatCurrency(product.price) + ")" : "") + "\n\n" +
+                         "Please let me know more details.";
+            
+            const encodedText = encodeURIComponent(text);
+            const whatsappUrl = `https://wa.me/917079466759?text=${encodedText}`;
+            
+            showToast("Opening WhatsApp for inquiry...");
+            setTimeout(() => {
+                window.open(whatsappUrl, '_blank');
+            }, 800);
+        }
+
         function openQuickview(productId) {
             const product = PRODUCTS.find(p => p.id === productId);
             if (!product) return;
@@ -4213,7 +4124,7 @@
 
             const addBtn = document.getElementById('modal-add-btn');
             addBtn.onclick = () => {
-                addToCart(product.id);
+                enquireProduct(product.id);
                 closeAllDrawers();
             };
 
@@ -4512,14 +4423,12 @@
                     timestamp: serverTimestamp()
                 });
                 cart = [];
-                updateCartUI();
                 closeAllDrawers();
                 showToast("Order Request sent for approval! Check 'My Orders'.", true);
             } catch(e) {
                 console.warn("Could not save to Firestore.", e);
                 showToast("Order Request Sent! (Mock Mode - Config Missing)", true);
                 cart = [];
-                updateCartUI();
                 closeAllDrawers();
             } finally {
                 isCheckingOut = false;

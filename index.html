@@ -4464,12 +4464,41 @@
             document.querySelectorAll('.faq-item').forEach(el => {
                 el.classList.remove('active');
                 el.querySelector('.faq-body').style.maxHeight = '0px';
+            });
+
+            if (!isActive) {
+                item.classList.add('active');
+                body.style.maxHeight = body.scrollHeight + "px";
+            }
+        }
+
+        function setupScrollReveal() {
+            const reveals = document.querySelectorAll('.reveal');
+            if (typeof IntersectionObserver === 'undefined') {
+                reveals.forEach(el => el.classList.add('active'));
+                return;
+            }
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, {
+                threshold: 0.05,
+                rootMargin: "0px 0px -20px 0px"
+            });
+            reveals.forEach(reveal => observer.observe(reveal));
+        }
+
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
                 const offset = 80;
                 const bodyRect = document.body.getBoundingClientRect().top;
                 const elementRect = element.getBoundingClientRect().top;
                 const elementPosition = elementRect - bodyRect;
                 const offsetPosition = elementPosition - offset;
-
                 window.scrollTo({
                     top: offsetPosition,
                     behavior: 'smooth'

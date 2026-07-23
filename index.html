@@ -3616,6 +3616,69 @@
         </div>
     </div>
 
+    
+    <!-- Interactive Search Modal Overlay -->
+    <div class="search-modal" id="search-modal">
+        <span class="search-modal-close" id="search-modal-close"><i class="fa-solid fa-xmark"></i></span>
+        <div class="search-input-wrap">
+            <input type="text" placeholder="Search beds, sofas, almirahs..." class="search-field" id="search-input">
+            <button class="search-icon-btn" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+        <div class="search-results-title" id="search-results-title">Search results appear below</div>
+        <div class="search-results-grid" id="search-results-grid">
+            <!-- Dynamic search outputs -->
+        </div>
+    </div>
+
+    
+    <!-- User Auth Drawer / Admin Panel -->
+    <div class="drawer" id="auth-drawer">
+        <div class="drawer-header">
+            <h3 class="drawer-title" id="auth-title">Welcome</h3>
+            <button class="drawer-close" id="auth-close" aria-label="Close">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div class="drawer-body" style="padding-top: 10px;">
+            <p class="login-subtitle" id="auth-subtitle">Sign in to access your bag.</p>
+
+            <!-- Auth State (Logged Out) -->
+            <div id="logged-out-state">
+                <div class="auth-input-group">
+                    <input type="email" id="auth-email" placeholder="Email address" class="search-field" style="margin-bottom: 12px; width: 100%;">
+                    <input type="password" id="auth-password" placeholder="Password" class="search-field" style="width: 100%;">
+                </div>
+                <button class="auth-submit-btn" id="email-auth-btn">Sign In</button>
+                <div class="auth-switch">
+                    <span id="auth-switch-text">Don't have an account? </span>
+                    <a href="#" id="auth-switch-link">Sign Up</a>
+                </div>
+
+                <div class="auth-divider"><span>or continue with</span></div>
+                <button class="google-auth-btn" id="google-auth-btn">
+                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google">
+                    Continue with Google
+                </button>
+            </div>
+
+            <!-- Auth State (Logged In) -->
+            <div id="logged-in-state" style="display: none; text-align: center;">
+                <div class="user-avatar" id="user-avatar">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <h4 style="margin: 15px 0 5px; font-size: 18px;" id="user-display-name">User Name</h4>
+                <p style="color: var(--secondary-text); font-size: 14px; margin-bottom: 25px;" id="user-email-text">user@email.com</p>
+                
+                <!-- Admin Button (Only visible if admin) -->
+                <button class="auth-submit-btn" id="admin-panel-btn" style="display: none; background-color: var(--luxury-gold); margin-bottom: 12px;">
+                    <i class="fa-solid fa-shield-halved"></i> Admin Panel
+                </button>
+
+                <button class="auth-submit-btn" id="logout-btn">Log Out</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Quickview Detail Overlay modal -->
     <div class="modal" id="product-modal">
         <div class="modal-card">

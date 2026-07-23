@@ -2231,6 +2231,27 @@
             font-weight: 800;
             color: var(--dark-brown);
         }
+
+        .service-img-wrap {
+            width: 100%;
+            height: 140px;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 10px;
+            border: 1px solid var(--border-color);
+            background: #f9f9f9;
+        }
+
+        .service-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .service-card:hover .service-img {
+            transform: scale(1.05);
+        }
         /* Login Modal Styles */
         .login-modal {
             position: fixed;
@@ -2622,38 +2643,62 @@
                 <span class="section-tag">Authentic Services</span>
                 <h2 class="section-title">Our Real <span>Services</span></h2>
             </div>
-            <div class="services-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px;">
-                <div class="service-card reveal">
+            <div class="services-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px;">
+                <div class="service-card reveal" data-service-key="interior">
                     <div class="service-icon"><i class="fa-solid fa-compass-drafting"></i></div>
                     <div class="service-title">Interior Designing</div>
+                    <div class="service-img-wrap">
+                        <img src="photos/minimalist_hero_bg.png" alt="Interior Designing" class="service-img" id="service-img-interior">
+                    </div>
                 </div>
-                <div class="service-card reveal">
+                <div class="service-card reveal" data-service-key="kitchen">
                     <div class="service-icon"><i class="fa-solid fa-kitchen-set"></i></div>
                     <div class="service-title">Modular Kitchen Manufacturing</div>
+                    <div class="service-img-wrap">
+                        <img src="photos/carpenter-furniture-04.jpeg" alt="Modular Kitchen" class="service-img" id="service-img-kitchen">
+                    </div>
                 </div>
-                <div class="service-card reveal">
+                <div class="service-card reveal" data-service-key="wardrobe">
                     <div class="service-icon"><i class="fa-solid fa-door-closed"></i></div>
                     <div class="service-title">Wardrobe Manufacturing</div>
+                    <div class="service-img-wrap">
+                        <img src="photos/carpenter-furniture-02.jpeg" alt="Wardrobe Manufacturing" class="service-img" id="service-img-wardrobe">
+                    </div>
                 </div>
-                <div class="service-card reveal">
+                <div class="service-card reveal" data-service-key="bed">
                     <div class="service-icon"><i class="fa-solid fa-bed"></i></div>
                     <div class="service-title">Bed Manufacturing</div>
+                    <div class="service-img-wrap">
+                        <img src="photos/bedroom_showcase.png" alt="Bed Manufacturing" class="service-img" id="service-img-bed">
+                    </div>
                 </div>
-                <div class="service-card reveal">
+                <div class="service-card reveal" data-service-key="all_work">
                     <div class="service-icon"><i class="fa-solid fa-hammer"></i></div>
                     <div class="service-title">All Furniture Work</div>
+                    <div class="service-img-wrap">
+                        <img src="photos/carpenter-furniture-10.jpeg" alt="All Furniture Work" class="service-img" id="service-img-all_work">
+                    </div>
                 </div>
-                <div class="service-card reveal">
+                <div class="service-card reveal" data-service-key="bed_install">
                     <div class="service-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
                     <div class="service-title">Bed Installation</div>
+                    <div class="service-img-wrap">
+                        <img src="photos/carpenter-furniture-01.jpeg" alt="Bed Installation" class="service-img" id="service-img-bed_install">
+                    </div>
                 </div>
-                <div class="service-card reveal">
+                <div class="service-card reveal" data-service-key="wardrobe_install">
                     <div class="service-icon"><i class="fa-solid fa-toolbox"></i></div>
                     <div class="service-title">Wardrobe Installation</div>
+                    <div class="service-img-wrap">
+                        <img src="photos/carpenter-furniture-03.jpeg" alt="Wardrobe Installation" class="service-img" id="service-img-wardrobe_install">
+                    </div>
                 </div>
-                <div class="service-card reveal">
+                <div class="service-card reveal" data-service-key="onsite">
                     <div class="service-icon"><i class="fa-solid fa-truck-fast"></i></div>
                     <div class="service-title">On-Site Services</div>
+                    <div class="service-img-wrap">
+                        <img src="photos/carpenter-furniture-05.jpeg" alt="On-Site Services" class="service-img" id="service-img-onsite">
+                    </div>
                 </div>
             </div>
         </div>
@@ -3397,6 +3442,7 @@
 
         window.onload = function() {
             renderProducts();
+            if (typeof loadServicePhotos === "function") loadServicePhotos(); else if (window.loadServicePhotos) window.loadServicePhotos();
             setupCategoryListeners();
             setupSearchSystem();
             setupScrollReveal();
@@ -4336,6 +4382,39 @@
             <!-- Products / Photos Upload Tab -->
             <div id="admin-tab-products" class="admin-tab-content" style="display: none;">
                 <h1 style="color: var(--dark-brown); font-family: 'Playfair Display', serif; margin-bottom: 20px;">Upload Photos & Manage Catalog</h1>
+
+                <!-- Service Cards Photo Customizer -->
+                <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px;">
+                    <h3 style="color: var(--dark-brown); margin-bottom: 15px; font-size: 18px; display: flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-image" style="color: var(--luxury-gold);"></i> Change Service Card Photos
+                    </h3>
+                    <form onsubmit="handleServicePhotoUpload(event)" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div>
+                            <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; color: #555;">Select Service Card*</label>
+                            <select id="admin-service-key" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; background: white;">
+                                <option value="interior">Interior Designing</option>
+                                <option value="kitchen">Modular Kitchen Manufacturing</option>
+                                <option value="wardrobe">Wardrobe Manufacturing</option>
+                                <option value="bed">Bed Manufacturing</option>
+                                <option value="all_work">All Furniture Work</option>
+                                <option value="bed_install">Bed Installation</option>
+                                <option value="wardrobe_install">Wardrobe Installation</option>
+                                <option value="onsite">On-Site Services</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; color: #555;">Choose New Photo*</label>
+                            <input type="file" id="admin-service-file" accept="image/*" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; background: #fafafa;">
+                        </div>
+
+                        <div style="grid-column: span 2; text-align: right;">
+                            <button type="submit" style="padding: 10px 20px; background: var(--dark-brown); color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;">
+                                <i class="fa-solid fa-upload"></i> Update Service Photo
+                            </button>
+                        </div>
+                    </form>
+                </div>
                 
                 <!-- Add New Photo/Product Form -->
                 <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px;">

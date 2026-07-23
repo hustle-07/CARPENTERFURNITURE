@@ -827,35 +827,6 @@
             z-index: 5;
         }
 
-        .wishlist-btn {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            width: 36px;
-            height: 36px;
-            background-color: var(--white);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: var(--shadow-light);
-            z-index: 5;
-            transition: var(--transition-smooth);
-            color: var(--secondary-text);
-            border: 2px solid var(--border-color);
-        }
-
-        .wishlist-btn:hover {
-            color: #D32F2F;
-            transform: scale(1.1);
-        }
-
-        .wishlist-btn.active {
-            color: #D32F2F;
-            background-color: rgba(211, 47, 47, 0.05);
-            border-color: rgba(211, 47, 47, 0.1);
-        }
-
         .product-info {
             padding-top: 12px;
             display: flex;
@@ -3051,11 +3022,6 @@
                 min-height: 44px;
             }
 
-            .wishlist-btn {
-                min-width: 36px;
-                min-height: 36px;
-            }
-
             .details-btn {
                 min-height: 44px;
             }
@@ -3650,80 +3616,6 @@
         </div>
     </div>
 
-    <!-- Wishlist Portfolio Drawer -->
-    <div class="drawer" id="wishlist-drawer">
-        <div class="drawer-header">
-            <h3 class="drawer-title">Wishlist Portfolio</h3>
-            <button class="drawer-close" id="wishlist-close" aria-label="Close">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-        </div>
-        <div class="drawer-body" id="wishlist-items-container">
-            <!-- Dynamic elements loaded by JS -->
-        </div>
-        <div class="drawer-footer">
-            <button class="checkout-btn" onclick="addAllWishlistToCart()">
-                Add All To Bag <i class="fa-solid fa-cart-plus"></i>
-            </button>
-        </div>
-    </div>
-
-    <!-- Interactive Search Modal Overlay -->
-    <div class="search-modal" id="search-modal">
-        <span class="search-modal-close" id="search-modal-close"><i class="fa-solid fa-xmark"></i></span>
-        <div class="search-input-wrap">
-            <input type="text" placeholder="Search beds, sofas, almirahs..." class="search-field" id="search-input">
-            <button class="search-icon-btn" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
-        </div>
-        <div class="search-results-title" id="search-results-title">Search results appear below</div>
-        <div class="search-results-grid" id="search-results-grid">
-            <!-- Dynamic search outputs -->
-        </div>
-    </div>
-
-    <!-- Login Modal -->
-    <div class="login-modal" id="login-modal">
-        <div class="login-card">
-            <span class="login-close" id="login-modal-close"><i class="fa-solid fa-xmark"></i></span>
-            
-            <div id="auth-unauthenticated-view">
-                <h3 class="login-title" id="auth-title">Welcome Back</h3>
-                <p class="login-subtitle" id="auth-subtitle">Sign in to access your wishlist and bag.</p>
-
-                <button class="google-auth-btn" id="google-login-btn">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google Logo">
-                    Continue with Google
-                </button>
-
-                <div class="auth-divider">OR EMAIL</div>
-
-                <div class="auth-form-group">
-                    <input type="email" id="auth-email" placeholder="Email Address">
-                </div>
-                <div class="auth-form-group">
-                    <input type="password" id="auth-password" placeholder="Password">
-                </div>
-
-                <button class="auth-submit-btn" id="email-auth-btn">Sign In</button>
-
-                <div class="auth-switch">
-                    <span id="auth-switch-text">Don't have an account? </span>
-                    <a id="auth-switch-link">Sign Up</a>
-                </div>
-            </div>
-
-            <div id="auth-authenticated-view" class="user-profile-modal" style="display: none;">
-                <div style="font-size: 50px; color: var(--luxury-gold); margin-bottom: 15px;">
-                    <i class="fa-solid fa-circle-user"></i>
-                </div>
-                <h3 class="login-title">Your Profile</h3>
-                <p class="login-subtitle" id="user-email-display">user@example.com</p>
-                <button class="auth-submit-btn" id="my-orders-btn" onclick="openMyOrders()" style="background-color: var(--luxury-gold); color: var(--dark-brown); margin-bottom: 15px; display: none;">My Orders</button>`n                <button class="auth-submit-btn" id="admin-panel-btn" onclick="openAdminPanel()">Open Admin Panel</button>
-                <button class="auth-submit-btn" id="logout-btn">Log Out</button>
-            </div>
-        </div>
-    </div>
-
     <!-- Quickview Detail Overlay modal -->
     <div class="modal" id="product-modal">
         <div class="modal-card">
@@ -3765,7 +3657,6 @@
 
     <script>
         let cart = [];
-        let wishlist = [];
         let activeTestimonialIndex = 0;
         let currentFilter = 'all';
 
@@ -3946,19 +3837,16 @@
 
         const header = document.getElementById('header');
         const cartDrawer = document.getElementById('cart-drawer');
-        const wishlistDrawer = document.getElementById('wishlist-drawer');
         const drawerOverlay = document.getElementById('drawer-overlay');
         const searchModal = document.getElementById('search-modal');
         const productModal = document.getElementById('product-modal');
         
         // Dynamic trigger points
         const cartTrigger = document.getElementById('cart-trigger');
-        const wishlistTrigger = document.getElementById('wishlist-trigger');
         const searchTrigger = document.getElementById('search-trigger');
         
         // Close parameters
         const cartClose = document.getElementById('cart-close');
-        const wishlistClose = document.getElementById('wishlist-close');
         const searchClose = document.getElementById('search-modal-close');
         const modalClose = document.getElementById('modal-close');
 
@@ -4002,7 +3890,6 @@
 
         function closeAllDrawersNoOverlay() {
             cartDrawer.classList.remove('active');
-            wishlistDrawer.classList.remove('active');
             searchModal.classList.remove('active');
             productModal.classList.remove('active');
         }
@@ -4014,7 +3901,6 @@
         }
 
         if(cartTrigger) cartTrigger.addEventListener('click', () => openDrawer(cartDrawer));
-        if(wishlistTrigger) wishlistTrigger.addEventListener('click', () => openDrawer(wishlistDrawer));
         if(searchTrigger) searchTrigger.addEventListener('click', () => {
             searchModal.classList.add('active');
             document.getElementById('search-input').focus();
@@ -4022,7 +3908,6 @@
         });
 
         cartClose.addEventListener('click', closeAllDrawers);
-        wishlistClose.addEventListener('click', closeAllDrawers);
         searchClose.addEventListener('click', closeAllDrawers);
         modalClose.addEventListener('click', closeAllDrawers);
         drawerOverlay.addEventListener('click', closeAllDrawers);
@@ -4086,15 +3971,12 @@
             }
 
             filteredList.forEach(prod => {
-                const isWishlisted = wishlist.includes(prod.id);
+                
                 const card = document.createElement('div');
                 card.className = 'product-card';
                 card.innerHTML = `
                     <div class="product-img-wrap">
                         ${prod.discount ? `<span class="discount-badge">${prod.discount}</span>` : ''}
-                        <button class="wishlist-btn ${isWishlisted ? 'active' : ''}" onclick="toggleWishlist(${prod.id}, event)" aria-label="Add to wishlist">
-                            <i class="${isWishlisted ? 'fa-solid' : 'fa-regular'} fa-heart"></i>
-                        </button>
                         <img src="${prod.image}" alt="${prod.name}" class="product-img" loading="lazy">
                     </div>
                     <div class="product-info">
@@ -4251,99 +4133,6 @@
 
             totalDisplay.textContent = formatCurrency(totalPrice);
         }
-
-        function toggleWishlist(productId, event) {
-            if (event) event.stopPropagation();
-            
-            const index = wishlist.indexOf(productId);
-            const product = PRODUCTS.find(p => p.id === productId);
-
-            if (index > -1) {
-                wishlist.splice(index, 1);
-                showToast(`Removed from Wishlist.`, false);
-            } else {
-                wishlist.push(productId);
-                showToast(`Saved to Wishlist!`);
-            }
-
-            updateWishlistUI();
-            handleCatalogArrangement();
-        }
-
-        function removeFromWishlist(productId) {
-            wishlist = wishlist.filter(id => id !== productId);
-            updateWishlistUI();
-            handleCatalogArrangement();
-            showToast("Removed from wishlist.", false);
-        }
-
-        function addWishlistItemToCart(productId) {
-            addToCart(productId);
-            removeFromWishlist(productId);
-        }
-
-        function addAllWishlistToCart() {
-            if (wishlist.length === 0) {
-                showToast("Wishlist is empty.", false);
-                return;
-            }
-            wishlist.forEach(id => {
-                const product = PRODUCTS.find(p => p.id === id);
-                if (product) {
-                    const existing = cart.find(item => item.id === id);
-                    if (existing) existing.qty += 1;
-                    else cart.push({ ...product, qty: 1 });
-                }
-            });
-            wishlist = [];
-            updateWishlistUI();
-            updateCartUI();
-            handleCatalogArrangement();
-            showToast("All wishlist items moved to Shopping Bag!");
-        }
-
-        function updateWishlistUI() {
-            const container = document.getElementById('wishlist-items-container');
-            const badge = document.getElementById('wishlist-badge');
-            
-            badge.textContent = wishlist.length;
-            badge.style.display = wishlist.length > 0 ? 'flex' : 'none';
-
-            if (wishlist.length === 0) {
-                container.innerHTML = `
-                    <div class="drawer-empty">
-                        <i class="fa-regular fa-heart"></i>
-                        <p>Your wishlist is currently empty.</p>
-                        <button class="hero-btn" style="padding: 12px 24px; font-size:12px;" onclick="closeAllDrawers()">Explore Catalog</button>
-                    </div>
-                `;
-                return;
-            }
-
-            container.innerHTML = '';
-            wishlist.forEach(id => {
-                const item = PRODUCTS.find(p => p.id === id);
-                if (!item) return;
-
-                const itemEl = document.createElement('div');
-                itemEl.className = 'cart-item';
-                itemEl.innerHTML = `
-                    <img src="${item.image}" alt="${item.name}" class="cart-item-img">
-                    <div class="cart-item-details">
-                        <div>
-                            <h4 class="cart-item-name">${item.name}</h4>
-                        <button class="hero-btn" style="padding: 6px 14px; font-size:11px; width:fit-content;" onclick="addWishlistItemToCart(${item.id})">
-                            Add to Bag <i class="fa-solid fa-plus"></i>
-                        </button>
-                    </div>
-                    <button class="cart-item-remove" onclick="removeFromWishlist(${item.id})" aria-label="Remove">
-                        <i class="fa-regular fa-trash-can"></i>
-                    </button>
-                `;
-                container.appendChild(itemEl);
-            });
-        }
-
         function setupSearchSystem() {
             const searchField = document.getElementById('search-input');
             const resultsGrid = document.getElementById('search-results-grid');
@@ -4760,7 +4549,7 @@
                 authSwitchLink.textContent = "Sign In";
             } else {
                 authTitle.textContent = "Welcome Back";
-                authSubtitle.textContent = "Sign in to access your wishlist and bag.";
+                authSubtitle.textContent = "Sign in to access your bag.";
                 emailAuthBtn.textContent = "Sign In";
                 authSwitchText.textContent = "Don't have an account? ";
                 authSwitchLink.textContent = "Sign Up";

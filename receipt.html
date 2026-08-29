@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quotation Generator - Carpenter Furniture</title>
+    <!-- Google Fonts for styling -->
+    <link href="https://fonts.googleapis.com/css2?family=Times+New+Roman:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Using standard print styles for a formal quotation */
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #f4f4f4;
+            color: #000;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .document-container {
+            width: 210mm; /* A4 width */
+            min-height: 297mm; /* A4 height */
+            margin: 0 auto;
+            background: #fff;
+            padding: 20mm;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        /* Helper for editable inputs without borders when printing */
+        input, textarea {
+            border: 1px dashed #ccc;
+            font-family: inherit;
+            font-size: inherit;
+            background: transparent;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #000;
+        }
+
+        .header-box {
+            border: 2px solid #000;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        .header-top {
+            text-align: center;
+            font-weight: bold;
+            font-size: 16px;
+            border-bottom: 1px solid #000;
+            padding-bottom: 2px;
+            margin-bottom: 10px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .header-left {
+            width: 65%;
+        }
+
+        .header-right {
+            width: 35%;
+            text-align: right;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .company-title {
+            font-size: 38px;
+            font-weight: bold;
+            margin: 0 0 10px 0;
+            line-height: 1;
+        }
+
+        .company-subtitle {
+            font-size: 18px;
+            font-style: italic;
+            font-weight: bold;
+            margin: 5px 0 15px 0;
+            text-align: center;
+        }
+
+        .address-line {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .contact-line {
+            margin-bottom: 5px;
+        }
+
+        .vendor-state {
+            text-align: right;
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .quotation-title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: underline;
+            margin: 20px 0;
+        }
+
+        .ref-date-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .ref-date-row input {
+            width: auto;
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        .party-name-row {
+            display: flex;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .party-name-row .label {
+            width: 100px;
+        }
+
+        .party-name-row textarea {
+            flex: 1;
+            resize: none;
+            height: 80px;
+            line-height: 1.5;
+        }
+
+        .subject-row {
+            display: flex;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .subject-row .label {
+            white-space: nowrap;
+            margin-right: 10px;
+        }
+
+        .salutation {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        table.items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 5px;
+        }
+
+        table.items-table th, table.items-table td {
+            border: 2px solid #000;
+            padding: 8px;
+            text-align: center;
+        }
+
+        table.items-table th {
+            font-weight: normal;
+        }
+
+        .col-sino { width: 8%; }
+        .col-particular { width: 42%; text-align: left !important; }
+        .col-rate { width: 20%; }
+        .col-sqfeet { width: 15%; }
+        .col-amount { width: 15%; }
+
+        .total-amount-row {
+            text-align: right;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .terms-section {
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+
+        .terms-title {
+            text-decoration: underline;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .terms-list {
+            list-style-type: none;
+            padding-left: 20px;
+            margin: 0 0 20px 0;
+        }
+
+        .terms-list li {
+            margin-bottom: 5px;
+        }
+
+        .discount-section {
+            margin-left: 20px;
+        }
+
+        .closing-section {
+            font-size: 16px;
+            margin-top: 30px;
+        }
+
+        .signature-section {
+            margin-top: 50px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .company-sig {
+            font-weight: bold;
+            font-size: 18px;
+            font-style: italic;
+        }
+
+        .customer-sig {
+            text-align: right;
+            font-weight: bold;
+            font-style: italic;
+        }
+
+        .signature-line {
+            border-bottom: 2px dotted #000;
+            width: 200px;
+            margin-top: 40px;
+        }
+
+        /* Non-print controls */
+        .controls {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background-color: #1E1A17;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 4px;
+            margin: 0 5px;
+        }
+        
+        .btn-add {
+            background-color: #D9C3A8;
+            color: #1E1A17;
+            font-weight: bold;
+        }
+
+        .remove-btn {
+            background: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            padding: 2px 6px;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .document-container {
+                box-shadow: none;
+                margin: 0;
+                padding: 10mm;
+            }
+            .controls, .remove-col {
+                display: none !important;
+            }
+            input, textarea {
+                border: none !important;
+                resize: none;
+            }
+            /* Hide empty rows visually but keep space if needed */
+        }
+    </style>
+</head>
+<body>
+
+<div class="controls">
+    <button class="btn btn-add" onclick="addRow()"><i class="fas fa-plus"></i> Add Item Row</button>
+    <button class="btn" onclick="window.print()"><i class="fas fa-print"></i> Print Quotation</button>
+</div>
+
+<div class="document-container">
+    <div class="header-box">
+        <div class="header-top">om</div>
+        <div class="header-content">
+            <div class="header-left">
+                <h1 class="company-title">Carpenter furniture</h1>
+                <div class="company-subtitle">All Carpentery Work On Site Service,Furniture<br>Manufacturers & Suppliers.</div>
+                <div class="address-line">Address - Vishwakarma Bhawan , Sipara , Mithapur , Patna ,</div>
+                <div class="contact-line"><b>Web site :-</b> www.carpenterfurnitures.com</div>
+                <div class="contact-line"><b>Gmail Id:</b> carpenterfurnitures@gmail.com</div>
+            </div>
+            <div class="header-right">
+                <div style="margin-bottom: 20px;">Contact : 7079466759</div>
+                <div>Whats app no - 7079466759</div>
+            </div>
+        </div>
+        <div class="vendor-state">Vendor State - BIHAR- 10 (BH)</div>
+    </div>
+
+    <div class="quotation-title">"QUOTATON"</div>
+
+    <div class="ref-date-row">
+        <div>Ref.no. : <input type="text" value="CF/256/26-27" style="width: 150px;"></div>
+        <div>Date : <input type="text" id="quoteDate" value="21/08/2026" style="width: 120px; text-align:right;"></div>
+    </div>
+
+    <div class="party-name-row">
+        <div class="label">Party Name</div>
+        <textarea>M/S MANISH KUMAR ,&#10;BAZAR SAMAITI,&#10;PATNA,</textarea>
+    </div>
+
+    <div class="subject-row">
+        <div class="label">Subject :-</div>
+        <input type="text" value="Wordobe, Show Case , Bed, Study Table and Kitchen Manufacturing Work,">
+    </div>
+
+    <div class="salutation">
+        Dear Sirs,<br>
+        In response to your valued enquiry we are giving estimate for the job under above subject<br>
+        with our Terms & Conditions:
+    </div>
+
+    <table class="items-table" id="itemsTable">
+        <thead>
+            <tr>
+                <th class="col-sino">SI.no</th>
+                <th class="col-particular">PARTICULAR</th>
+                <th class="col-rate">Rate Per Sq Feet/Pcs</th>
+                <th class="col-sqfeet">Sq feet/Pcs</th>
+                <th class="col-amount">AMOUNT</th>
+                <th class="remove-col" style="width: 5%; border: none;"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td style="text-align: left;"><input type="text" value="Wordobe,Study Table,& Show case and Etc."></td>
+                <td><input type="text" value="340.00" class="rate" oninput="calculateAmount(this)"></td>
+                <td><input type="text" value="" class="qty" oninput="calculateAmount(this)"></td>
+                <td><input type="text" value="" class="amount" readonly></td>
+                <td class="remove-col" style="border: none;"><button class="remove-btn" onclick="removeRow(this)"><i class="fas fa-times"></i></button></td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td style="text-align: left;"><input type="text" value="Bed Mfg"></td>
+                <td><input type="text" value="25,000.00" class="rate" oninput="calculateAmount(this)"></td>
+                <td><input type="text" value="" class="qty" oninput="calculateAmount(this)"></td>
+                <td><input type="text" value="" class="amount" readonly></td>
+                <td class="remove-col" style="border: none;"><button class="remove-btn" onclick="removeRow(this)"><i class="fas fa-times"></i></button></td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td style="text-align: left;"><input type="text" value="Modular Kitchen Mfg"></td>
+                <td><input type="text" value="380" class="rate" oninput="calculateAmount(this)"></td>
+                <td><input type="text" value="" class="qty" oninput="calculateAmount(this)"></td>
+                <td><input type="text" value="" class="amount" readonly></td>
+                <td class="remove-col" style="border: none;"><button class="remove-btn" onclick="removeRow(this)"><i class="fas fa-times"></i></button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="total-amount-row">
+        Total Amount &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span id="totalAmount"></span>
+    </div>
+
+    <div class="terms-section">
+        <div class="terms-title">TERMS & CONDITIONS :</div>
+        <ul class="terms-list">
+            <li>(1) Job Completion : <input type="text" value="Within Four Month from date of order," style="width: 350px;"></li>
+            <li>(2) Payment : <input type="text" value="30% in advance with order" style="width: 350px;"></li>
+            <li>(3) Validity : <input type="text" value="The price quoted above is valid for 3 Month only," style="width: 350px;"></li>
+        </ul>
+        
+        <div>Discount Available</div>
+        <div class="discount-section">
+            * &nbsp;&nbsp; <input type="text" value="Payment 60% In Advance With Order at 5% Discount" style="width: 400px;">
+        </div>
+    </div>
+
+    <div class="closing-section">
+        Hope above is inline with you, looking forward for your esteemed order<br>
+        Thanking you,<br>
+        Yours faithfully,<br>
+        <div class="company-sig">for Carpenter Furniture</div>
+    </div>
+
+    <div class="signature-section">
+        <div></div>
+        <div class="customer-sig">
+            <div style="text-decoration: underline; margin-bottom: 40px;">Customer Signature</div>
+            <div class="signature-line"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Format date as DD/MM/YYYY
+    const today = new Date();
+    const formattedDate = String(today.getDate()).padStart(2, '0') + '/' + 
+                          String(today.getMonth() + 1).padStart(2, '0') + '/' + 
+                          today.getFullYear();
+    document.getElementById('quoteDate').value = formattedDate;
+
+    function parseNum(val) {
+        if (!val) return 0;
+        return parseFloat(val.replace(/,/g, '')) || 0;
+    }
+
+    function calculateAmount(input) {
+        const row = input.closest('tr');
+        const rateStr = row.querySelector('.rate').value;
+        const qtyStr = row.querySelector('.qty').value;
+        const amountInput = row.querySelector('.amount');
+
+        if (rateStr && qtyStr) {
+            const rate = parseNum(rateStr);
+            const qty = parseNum(qtyStr);
+            const amt = rate * qty;
+            amountInput.value = amt.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        } else {
+            amountInput.value = '';
+        }
+        calculateTotal();
+    }
+
+    function calculateTotal() {
+        const amounts = document.querySelectorAll('.amount');
+        let total = 0;
+        amounts.forEach(amt => {
+            total += parseNum(amt.value);
+        });
+        if (total > 0) {
+            document.getElementById('totalAmount').textContent = total.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        } else {
+            document.getElementById('totalAmount').textContent = '';
+        }
+    }
+
+    function updateSerialNumbers() {
+        const rows = document.querySelectorAll('#itemsTable tbody tr');
+        rows.forEach((row, index) => {
+            row.cells[0].textContent = index + 1;
+        });
+    }
+
+    function addRow() {
+        const tbody = document.querySelector('#itemsTable tbody');
+        const rowCount = tbody.children.length + 1;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${rowCount}</td>
+            <td style="text-align: left;"><input type="text" value=""></td>
+            <td><input type="text" value="" class="rate" oninput="calculateAmount(this)"></td>
+            <td><input type="text" value="" class="qty" oninput="calculateAmount(this)"></td>
+            <td><input type="text" value="" class="amount" readonly></td>
+            <td class="remove-col" style="border: none;"><button class="remove-btn" onclick="removeRow(this)"><i class="fas fa-times"></i></button></td>
+        `;
+        tbody.appendChild(tr);
+        updateSerialNumbers();
+    }
+
+    function removeRow(btn) {
+        const row = btn.closest('tr');
+        row.remove();
+        updateSerialNumbers();
+        calculateTotal();
+    }
+</script>
+
+</body>
+</html>

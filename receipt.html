@@ -5,307 +5,490 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quotation Generator - Carpenter Furniture</title>
     <!-- Google Fonts for styling -->
-    <link href="https://fonts.googleapis.com/css2?family=Times+New+Roman:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Times+New+Roman:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* Using standard print styles for a formal quotation */
+        /* ================= SCREEN STYLES (Form UI) ================= */
+        :root {
+            --bg-color: #f4f4f4;
+            --primary: #1E1A17;
+            --secondary: #D9C3A8;
+            --border: #ddd;
+        }
+
         body {
-            font-family: 'Times New Roman', Times, serif;
-            background-color: #f4f4f4;
-            color: #000;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            color: var(--primary);
         }
 
-        .document-container {
-            width: 210mm; /* A4 width */
-            min-height: 297mm; /* A4 height */
-            margin: 0 auto;
+        .app-container {
+            max-width: 1000px;
+            margin: 40px auto;
             background: #fff;
-            padding: 20mm;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            box-sizing: border-box;
-            position: relative;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            overflow: hidden;
         }
 
-        /* Helper for editable inputs without borders when printing */
-        input, textarea {
-            border: 1px dashed #ccc;
-            font-family: inherit;
-            font-size: inherit;
-            background: transparent;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: #000;
-        }
-
-        .header-box {
-            border: 2px solid #000;
-            padding: 10px;
-            margin-bottom: 20px;
-        }
-
-        .header-top {
-            text-align: center;
-            font-weight: bold;
-            font-size: 16px;
-            border-bottom: 1px solid #000;
-            padding-bottom: 2px;
-            margin-bottom: 10px;
-        }
-
-        .header-content {
+        .form-header {
+            background-color: var(--primary);
+            color: #fff;
+            padding: 20px 30px;
             display: flex;
             justify-content: space-between;
+            align-items: center;
         }
 
-        .header-left {
-            width: 65%;
+        .form-header h2 {
+            margin: 0;
+            font-weight: 500;
         }
 
-        .header-right {
-            width: 35%;
-            text-align: right;
-            font-size: 16px;
-            font-weight: bold;
+        .form-body {
+            padding: 30px;
         }
 
-        .company-title {
-            font-size: 38px;
-            font-weight: bold;
-            margin: 0 0 10px 0;
-            line-height: 1;
+        .form-section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
         }
 
-        .company-subtitle {
+        .form-section h3 {
+            margin-top: 0;
+            color: var(--primary);
             font-size: 18px;
-            font-style: italic;
-            font-weight: bold;
-            margin: 5px 0 15px 0;
-            text-align: center;
+            margin-bottom: 15px;
         }
 
-        .address-line {
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 10px;
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
         }
 
-        .contact-line {
-            margin-bottom: 5px;
+        .form-group {
+            margin-bottom: 15px;
         }
 
-        .vendor-state {
-            text-align: right;
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
             font-size: 14px;
-            font-weight: bold;
-            margin-top: 10px;
+            font-weight: 500;
         }
 
-        .quotation-title {
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-            text-decoration: underline;
-            margin: 20px 0;
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            box-sizing: border-box;
         }
 
-        .ref-date-row {
-            display: flex;
-            justify-content: space-between;
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 20px;
+        .form-control:focus {
+            outline: none;
+            border-color: var(--secondary);
         }
 
-        .ref-date-row input {
-            width: auto;
-            display: inline-block;
-            font-weight: bold;
+        textarea.form-control {
+            resize: vertical;
+            height: 100px;
         }
 
-        .party-name-row {
-            display: flex;
-            margin-bottom: 20px;
-            font-size: 16px;
-        }
-
-        .party-name-row .label {
-            width: 100px;
-        }
-
-        .party-name-row textarea {
-            flex: 1;
-            resize: none;
-            height: 80px;
-            line-height: 1.5;
-        }
-
-        .subject-row {
-            display: flex;
-            margin-bottom: 20px;
-            font-size: 16px;
-        }
-
-        .subject-row .label {
-            white-space: nowrap;
-            margin-right: 10px;
-        }
-
-        .salutation {
-            font-size: 16px;
-            margin-bottom: 20px;
-        }
-
-        table.items-table {
+        /* Items Table in Form */
+        .items-form-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 5px;
+            margin-bottom: 15px;
         }
 
-        table.items-table th, table.items-table td {
-            border: 2px solid #000;
-            padding: 8px;
-            text-align: center;
+        .items-form-table th, .items-form-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
         }
 
-        table.items-table th {
-            font-weight: normal;
-        }
-
-        .col-sino { width: 8%; }
-        .col-particular { width: 42%; text-align: left !important; }
-        .col-rate { width: 20%; }
-        .col-sqfeet { width: 15%; }
-        .col-amount { width: 15%; }
-
-        .total-amount-row {
-            text-align: right;
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 30px;
-        }
-
-        .terms-section {
-            font-size: 16px;
-            margin-bottom: 30px;
-        }
-
-        .terms-title {
-            text-decoration: underline;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .terms-list {
-            list-style-type: none;
-            padding-left: 20px;
-            margin: 0 0 20px 0;
-        }
-
-        .terms-list li {
-            margin-bottom: 5px;
-        }
-
-        .discount-section {
-            margin-left: 20px;
-        }
-
-        .closing-section {
-            font-size: 16px;
-            margin-top: 30px;
-        }
-
-        .signature-section {
-            margin-top: 50px;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .company-sig {
-            font-weight: bold;
-            font-size: 18px;
-            font-style: italic;
-        }
-
-        .customer-sig {
-            text-align: right;
-            font-weight: bold;
-            font-style: italic;
-        }
-
-        .signature-line {
-            border-bottom: 2px dotted #000;
-            width: 200px;
-            margin-top: 40px;
-        }
-
-        /* Non-print controls */
-        .controls {
-            text-align: center;
-            margin-bottom: 20px;
+        .items-form-table th {
+            font-weight: 500;
+            font-size: 14px;
+            background: #f9f9f9;
         }
 
         .btn {
-            background-color: #1E1A17;
+            background-color: var(--primary);
             color: #fff;
             border: none;
             padding: 10px 20px;
             cursor: pointer;
-            font-size: 16px;
-            border-radius: 4px;
-            margin: 0 5px;
-        }
-        
-        .btn-add {
-            background-color: #D9C3A8;
-            color: #1E1A17;
-            font-weight: bold;
+            font-size: 14px;
+            border-radius: 6px;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Poppins', sans-serif;
         }
 
-        .remove-btn {
-            background: #ff4444;
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-danger {
+            background-color: #ff4d4f;
             color: white;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            padding: 2px 6px;
+            padding: 6px 12px;
+        }
+
+        .action-bar {
+            padding: 20px 30px;
+            background: #f9f9f9;
+            text-align: right;
+        }
+
+        .action-bar .btn-generate {
+            background-color: var(--secondary);
+            color: var(--primary);
+            font-size: 16px;
+            font-weight: 600;
+            padding: 12px 30px;
+        }
+
+        /* ================= PRINT STYLES (The actual Quotation) ================= */
+        .print-container {
+            display: none; /* Hidden on screen */
+            font-family: 'Times New Roman', Times, serif;
+            color: #000;
         }
 
         @media print {
-            body {
-                background: white;
-                padding: 0;
-            }
-            .document-container {
-                box-shadow: none;
-                margin: 0;
-                padding: 10mm;
-            }
-            .controls, .remove-col {
+            /* Hide the web form completely */
+            .app-container {
                 display: none !important;
             }
-            input, textarea {
-                border: none !important;
-                resize: none;
+            body {
+                background: white;
+                margin: 0;
+                padding: 0;
             }
-            /* Hide empty rows visually but keep space if needed */
+            
+            /* Show the print layout */
+            .print-container {
+                display: block;
+                width: 210mm;
+                margin: 0 auto;
+                padding: 15mm;
+                box-sizing: border-box;
+            }
+
+            .header-box {
+                border: 2px solid #000;
+                padding: 10px;
+                margin-bottom: 20px;
+            }
+
+            .header-top {
+                text-align: center;
+                font-weight: bold;
+                font-size: 16px;
+                border-bottom: 1px solid #000;
+                padding-bottom: 2px;
+                margin-bottom: 10px;
+            }
+
+            .header-content {
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .header-left {
+                width: 65%;
+            }
+
+            .header-right {
+                width: 35%;
+                text-align: right;
+                font-size: 16px;
+                font-weight: bold;
+            }
+
+            .company-title {
+                font-size: 38px;
+                font-weight: bold;
+                margin: 0 0 10px 0;
+                line-height: 1;
+            }
+
+            .company-subtitle {
+                font-size: 18px;
+                font-style: italic;
+                font-weight: bold;
+                margin: 5px 0 15px 0;
+                text-align: center;
+            }
+
+            .address-line {
+                font-size: 16px;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+
+            .contact-line {
+                margin-bottom: 5px;
+            }
+
+            .vendor-state {
+                text-align: right;
+                font-size: 14px;
+                font-weight: bold;
+                margin-top: 10px;
+            }
+
+            .quotation-title {
+                text-align: center;
+                font-size: 24px;
+                font-weight: bold;
+                text-decoration: underline;
+                margin: 20px 0;
+            }
+
+            .ref-date-row {
+                display: flex;
+                justify-content: space-between;
+                font-size: 16px;
+                font-weight: bold;
+                margin-bottom: 20px;
+            }
+
+            .party-name-row {
+                display: flex;
+                margin-bottom: 20px;
+                font-size: 16px;
+            }
+
+            .party-name-row .label {
+                width: 100px;
+            }
+
+            .party-name-row .value {
+                flex: 1;
+                white-space: pre-wrap;
+            }
+
+            .subject-row {
+                display: flex;
+                margin-bottom: 20px;
+                font-size: 16px;
+            }
+
+            .subject-row .label {
+                white-space: nowrap;
+                margin-right: 10px;
+            }
+
+            .salutation {
+                font-size: 16px;
+                margin-bottom: 20px;
+            }
+
+            table.print-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 5px;
+            }
+
+            table.print-table th, table.print-table td {
+                border: 2px solid #000;
+                padding: 8px;
+                text-align: center;
+            }
+
+            table.print-table th {
+                font-weight: normal;
+            }
+
+            .total-amount-row {
+                text-align: right;
+                font-size: 18px;
+                font-weight: bold;
+                margin-bottom: 30px;
+                padding-right: 15px;
+            }
+
+            .terms-section {
+                font-size: 16px;
+                margin-bottom: 30px;
+            }
+
+            .terms-title {
+                text-decoration: underline;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+
+            .terms-list {
+                list-style-type: none;
+                padding-left: 20px;
+                margin: 0 0 20px 0;
+            }
+
+            .terms-list li {
+                margin-bottom: 5px;
+            }
+
+            .discount-section {
+                margin-left: 20px;
+            }
+
+            .closing-section {
+                font-size: 16px;
+                margin-top: 30px;
+            }
+
+            .signature-section {
+                margin-top: 50px;
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .company-sig {
+                font-weight: bold;
+                font-size: 18px;
+                font-style: italic;
+            }
+
+            .customer-sig {
+                text-align: right;
+                font-weight: bold;
+                font-style: italic;
+            }
+
+            .signature-line {
+                border-bottom: 2px dotted #000;
+                width: 200px;
+                margin-top: 40px;
+            }
         }
     </style>
 </head>
 <body>
 
-<div class="controls">
-    <button class="btn btn-add" onclick="addRow()"><i class="fas fa-plus"></i> Add Item Row</button>
-    <button class="btn" onclick="window.print()"><i class="fas fa-print"></i> Print Quotation</button>
+<!-- WEB FORM INTERFACE -->
+<div class="app-container">
+    <div class="form-header">
+        <h2><i class="fa-solid fa-file-invoice"></i> Create New Quotation</h2>
+        <a href="index.html" style="color: #D9C3A8; text-decoration: none;"><i class="fa-solid fa-house"></i> Back to Home</a>
+    </div>
+    
+    <div class="form-body">
+        <form id="quoteForm">
+            <!-- Basic Details -->
+            <div class="form-section">
+                <h3>Document Details</h3>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Ref.no.</label>
+                        <input type="text" id="f_ref" class="form-control" value="CF/256/26-27">
+                    </div>
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="text" id="f_date" class="form-control">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Party Name & Address</label>
+                    <textarea id="f_party" class="form-control">M/S MANISH KUMAR ,&#10;BAZAR SAMAITI,&#10;PATNA,</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Subject</label>
+                    <input type="text" id="f_subject" class="form-control" value="Wordobe, Show Case , Bed, Study Table and Kitchen Manufacturing Work,">
+                </div>
+            </div>
+
+            <!-- Items -->
+            <div class="form-section">
+                <h3>Items</h3>
+                <table class="items-form-table" id="f_itemsTable">
+                    <thead>
+                        <tr>
+                            <th width="40%">Particular</th>
+                            <th width="20%">Rate Per Sq Feet/Pcs</th>
+                            <th width="15%">Sq feet/Pcs</th>
+                            <th width="20%">Amount (Auto)</th>
+                            <th width="5%"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="text" class="form-control f_particular" value="Wordobe,Study Table,& Show case and Etc."></td>
+                            <td><input type="text" class="form-control f_rate" value="340.00" oninput="calcFormAmount(this)"></td>
+                            <td><input type="text" class="form-control f_qty" oninput="calcFormAmount(this)"></td>
+                            <td><input type="text" class="form-control f_amount" readonly></td>
+                            <td><button type="button" class="btn btn-danger" onclick="removeFormRow(this)"><i class="fa-solid fa-trash"></i></button></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="form-control f_particular" value="Bed Mfg"></td>
+                            <td><input type="text" class="form-control f_rate" value="25,000.00" oninput="calcFormAmount(this)"></td>
+                            <td><input type="text" class="form-control f_qty" oninput="calcFormAmount(this)"></td>
+                            <td><input type="text" class="form-control f_amount" readonly></td>
+                            <td><button type="button" class="btn btn-danger" onclick="removeFormRow(this)"><i class="fa-solid fa-trash"></i></button></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="form-control f_particular" value="Modular Kitchen Mfg"></td>
+                            <td><input type="text" class="form-control f_rate" value="380" oninput="calcFormAmount(this)"></td>
+                            <td><input type="text" class="form-control f_qty" oninput="calcFormAmount(this)"></td>
+                            <td><input type="text" class="form-control f_amount" readonly></td>
+                            <td><button type="button" class="btn btn-danger" onclick="removeFormRow(this)"><i class="fa-solid fa-trash"></i></button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button type="button" class="btn btn-outline" onclick="addFormRow()"><i class="fa-solid fa-plus"></i> Add Row</button>
+            </div>
+
+            <!-- Terms -->
+            <div class="form-section" style="border-bottom: none; margin-bottom: 0;">
+                <h3>Terms & Conditions</h3>
+                <div class="form-group">
+                    <label>(1) Job Completion</label>
+                    <input type="text" id="f_term1" class="form-control" value="Within Four Month from date of order,">
+                </div>
+                <div class="form-group">
+                    <label>(2) Payment</label>
+                    <input type="text" id="f_term2" class="form-control" value="30% in advance with order">
+                </div>
+                <div class="form-group">
+                    <label>(3) Validity</label>
+                    <input type="text" id="f_term3" class="form-control" value="The price quoted above is valid for 3 Month only,">
+                </div>
+                <div class="form-group">
+                    <label>Discount Note</label>
+                    <input type="text" id="f_discount" class="form-control" value="Payment 60% In Advance With Order at 5% Discount">
+                </div>
+            </div>
+        </form>
+    </div>
+    
+    <div class="action-bar">
+        <button class="btn btn-generate" onclick="generateAndPrint()"><i class="fa-solid fa-print"></i> Generate & Print Quotation</button>
+    </div>
 </div>
 
-<div class="document-container">
+<!-- PRINTABLE QUOTATION (Hidden until print) -->
+<div class="print-container" id="printableArea">
     <div class="header-box">
         <div class="header-top">om</div>
         <div class="header-content">
@@ -327,18 +510,18 @@
     <div class="quotation-title">"QUOTATON"</div>
 
     <div class="ref-date-row">
-        <div>Ref.no. : <input type="text" value="CF/256/26-27" style="width: 150px;"></div>
-        <div>Date : <input type="text" id="quoteDate" value="21/08/2026" style="width: 120px; text-align:right;"></div>
+        <div>Ref.no. : <span id="p_ref"></span></div>
+        <div>Date : <span id="p_date"></span></div>
     </div>
 
     <div class="party-name-row">
         <div class="label">Party Name</div>
-        <textarea>M/S MANISH KUMAR ,&#10;BAZAR SAMAITI,&#10;PATNA,</textarea>
+        <div class="value" id="p_party"></div>
     </div>
 
     <div class="subject-row">
         <div class="label">Subject :-</div>
-        <input type="text" value="Wordobe, Show Case , Bed, Study Table and Kitchen Manufacturing Work,">
+        <div class="value" id="p_subject"></div>
     </div>
 
     <div class="salutation">
@@ -347,60 +530,36 @@
         with our Terms & Conditions:
     </div>
 
-    <table class="items-table" id="itemsTable">
+    <table class="print-table">
         <thead>
             <tr>
-                <th class="col-sino">SI.no</th>
-                <th class="col-particular">PARTICULAR</th>
-                <th class="col-rate">Rate Per Sq Feet/Pcs</th>
-                <th class="col-sqfeet">Sq feet/Pcs</th>
-                <th class="col-amount">AMOUNT</th>
-                <th class="remove-col" style="width: 5%; border: none;"></th>
+                <th width="8%">SI.no</th>
+                <th width="42%" style="text-align: left;">PARTICULAR</th>
+                <th width="20%">Rate Per Sq Feet/Pcs</th>
+                <th width="15%">Sq feet/Pcs</th>
+                <th width="15%">AMOUNT</th>
             </tr>
         </thead>
-        <tbody>
-            <tr>
-                <td>1</td>
-                <td style="text-align: left;"><input type="text" value="Wordobe,Study Table,& Show case and Etc."></td>
-                <td><input type="text" value="340.00" class="rate" oninput="calculateAmount(this)"></td>
-                <td><input type="text" value="" class="qty" oninput="calculateAmount(this)"></td>
-                <td><input type="text" value="" class="amount" readonly></td>
-                <td class="remove-col" style="border: none;"><button class="remove-btn" onclick="removeRow(this)"><i class="fas fa-times"></i></button></td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td style="text-align: left;"><input type="text" value="Bed Mfg"></td>
-                <td><input type="text" value="25,000.00" class="rate" oninput="calculateAmount(this)"></td>
-                <td><input type="text" value="" class="qty" oninput="calculateAmount(this)"></td>
-                <td><input type="text" value="" class="amount" readonly></td>
-                <td class="remove-col" style="border: none;"><button class="remove-btn" onclick="removeRow(this)"><i class="fas fa-times"></i></button></td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td style="text-align: left;"><input type="text" value="Modular Kitchen Mfg"></td>
-                <td><input type="text" value="380" class="rate" oninput="calculateAmount(this)"></td>
-                <td><input type="text" value="" class="qty" oninput="calculateAmount(this)"></td>
-                <td><input type="text" value="" class="amount" readonly></td>
-                <td class="remove-col" style="border: none;"><button class="remove-btn" onclick="removeRow(this)"><i class="fas fa-times"></i></button></td>
-            </tr>
+        <tbody id="p_itemsBody">
+            <!-- Rows injected by JS -->
         </tbody>
     </table>
 
     <div class="total-amount-row">
-        Total Amount &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span id="totalAmount"></span>
+        Total Amount &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span id="p_total"></span>
     </div>
 
     <div class="terms-section">
         <div class="terms-title">TERMS & CONDITIONS :</div>
         <ul class="terms-list">
-            <li>(1) Job Completion : <input type="text" value="Within Four Month from date of order," style="width: 350px;"></li>
-            <li>(2) Payment : <input type="text" value="30% in advance with order" style="width: 350px;"></li>
-            <li>(3) Validity : <input type="text" value="The price quoted above is valid for 3 Month only," style="width: 350px;"></li>
+            <li>(1) Job Completion : <span id="p_term1"></span></li>
+            <li>(2) Payment : <span id="p_term2"></span></li>
+            <li>(3) Validity : <span id="p_term3"></span></li>
         </ul>
         
         <div>Discount Available</div>
         <div class="discount-section">
-            * &nbsp;&nbsp; <input type="text" value="Payment 60% In Advance With Order at 5% Discount" style="width: 400px;">
+            * &nbsp;&nbsp; <span id="p_discount"></span>
         </div>
     </div>
 
@@ -421,76 +580,100 @@
 </div>
 
 <script>
-    // Format date as DD/MM/YYYY
+    // Set default date
     const today = new Date();
     const formattedDate = String(today.getDate()).padStart(2, '0') + '/' + 
                           String(today.getMonth() + 1).padStart(2, '0') + '/' + 
                           today.getFullYear();
-    document.getElementById('quoteDate').value = formattedDate;
+    document.getElementById('f_date').value = formattedDate;
 
+    // Helper to parse numbers
     function parseNum(val) {
         if (!val) return 0;
         return parseFloat(val.replace(/,/g, '')) || 0;
     }
 
-    function calculateAmount(input) {
+    // Auto-calculate amounts in the form
+    function calcFormAmount(input) {
         const row = input.closest('tr');
-        const rateStr = row.querySelector('.rate').value;
-        const qtyStr = row.querySelector('.qty').value;
-        const amountInput = row.querySelector('.amount');
+        const rateStr = row.querySelector('.f_rate').value;
+        const qtyStr = row.querySelector('.f_qty').value;
+        const amountInput = row.querySelector('.f_amount');
 
         if (rateStr && qtyStr) {
-            const rate = parseNum(rateStr);
-            const qty = parseNum(qtyStr);
-            const amt = rate * qty;
+            const amt = parseNum(rateStr) * parseNum(qtyStr);
             amountInput.value = amt.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         } else {
             amountInput.value = '';
         }
-        calculateTotal();
     }
 
-    function calculateTotal() {
-        const amounts = document.querySelectorAll('.amount');
-        let total = 0;
-        amounts.forEach(amt => {
-            total += parseNum(amt.value);
-        });
-        if (total > 0) {
-            document.getElementById('totalAmount').textContent = total.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        } else {
-            document.getElementById('totalAmount').textContent = '';
-        }
-    }
-
-    function updateSerialNumbers() {
-        const rows = document.querySelectorAll('#itemsTable tbody tr');
-        rows.forEach((row, index) => {
-            row.cells[0].textContent = index + 1;
-        });
-    }
-
-    function addRow() {
-        const tbody = document.querySelector('#itemsTable tbody');
-        const rowCount = tbody.children.length + 1;
+    // Add a new row to the form
+    function addFormRow() {
+        const tbody = document.querySelector('#f_itemsTable tbody');
         const tr = document.createElement('tr');
         tr.innerHTML = `
-            <td>${rowCount}</td>
-            <td style="text-align: left;"><input type="text" value=""></td>
-            <td><input type="text" value="" class="rate" oninput="calculateAmount(this)"></td>
-            <td><input type="text" value="" class="qty" oninput="calculateAmount(this)"></td>
-            <td><input type="text" value="" class="amount" readonly></td>
-            <td class="remove-col" style="border: none;"><button class="remove-btn" onclick="removeRow(this)"><i class="fas fa-times"></i></button></td>
+            <td><input type="text" class="form-control f_particular" value=""></td>
+            <td><input type="text" class="form-control f_rate" value="" oninput="calcFormAmount(this)"></td>
+            <td><input type="text" class="form-control f_qty" oninput="calcFormAmount(this)"></td>
+            <td><input type="text" class="form-control f_amount" readonly></td>
+            <td><button type="button" class="btn btn-danger" onclick="removeFormRow(this)"><i class="fa-solid fa-trash"></i></button></td>
         `;
         tbody.appendChild(tr);
-        updateSerialNumbers();
     }
 
-    function removeRow(btn) {
-        const row = btn.closest('tr');
-        row.remove();
-        updateSerialNumbers();
-        calculateTotal();
+    function removeFormRow(btn) {
+        btn.closest('tr').remove();
+    }
+
+    // Populate Print Template and Trigger Print
+    function generateAndPrint() {
+        // Map text fields
+        document.getElementById('p_ref').textContent = document.getElementById('f_ref').value;
+        document.getElementById('p_date').textContent = document.getElementById('f_date').value;
+        document.getElementById('p_party').textContent = document.getElementById('f_party').value;
+        document.getElementById('p_subject').textContent = document.getElementById('f_subject').value;
+        document.getElementById('p_term1').textContent = document.getElementById('f_term1').value;
+        document.getElementById('p_term2').textContent = document.getElementById('f_term2').value;
+        document.getElementById('p_term3').textContent = document.getElementById('f_term3').value;
+        document.getElementById('p_discount').textContent = document.getElementById('f_discount').value;
+
+        // Map items
+        const formRows = document.querySelectorAll('#f_itemsTable tbody tr');
+        const printBody = document.getElementById('p_itemsBody');
+        printBody.innerHTML = '';
+        let total = 0;
+
+        formRows.forEach((row, index) => {
+            const part = row.querySelector('.f_particular').value;
+            const rate = row.querySelector('.f_rate').value;
+            const qty = row.querySelector('.f_qty').value;
+            const amt = row.querySelector('.f_amount').value;
+            
+            if(part.trim() !== '') {
+                total += parseNum(amt);
+                
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td style="text-align: left;">${part}</td>
+                    <td>${rate}</td>
+                    <td>${qty}</td>
+                    <td>${amt}</td>
+                `;
+                printBody.appendChild(tr);
+            }
+        });
+
+        // Set total
+        if (total > 0) {
+            document.getElementById('p_total').textContent = total.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        } else {
+            document.getElementById('p_total').textContent = '';
+        }
+
+        // Trigger native print dialog (Browser handles hiding .app-container via CSS @media print)
+        window.print();
     }
 </script>
 
